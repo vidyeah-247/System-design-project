@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
@@ -13,11 +13,6 @@ enum Side {
   SELL
 }
 
-enum OrderType {
-  MARKET
-  LIMIT
-}
-
 enum OrderStatus {
   OPEN
   PARTIALLY_FILLED
@@ -26,84 +21,70 @@ enum OrderStatus {
 }
 
 model User {
-  id          String      @id @default(uuid())
-  username    String      @unique
-  password    String
+  id              String      @id @default(uuid())
 
-  balances    Balance[]
-  orders      Order[]
+  username        String      @unique
+  password        String
 
-  buyerFills  Fill[]      @relation("BuyerFills")
-  sellerFills Fill[]      @relation("SellerFills")
+  balances        Balance[]
 
-  createdAt   DateTime    @default(now())
-}
+  orders          Order[]
 
-model Market {
-  id          String      @id @default(uuid())
+  buyerFills      Fill[]      @relation("BuyerFills")
+  sellerFills     Fill[]      @relation("SellerFills")
 
-  symbol      String      @unique
-  baseAsset   String
-  quoteAsset  String
-
-  orders      Order[]
-  fills       Fill[]
-
-  createdAt   DateTime    @default(now())
+  createdAt       DateTime    @default(now())
 }
 
 model Balance {
-  id          String      @id @default(uuid())
+  id              String      @id @default(uuid())
 
-  userId      String
-  asset       String
-  amount      Float       @default(0)
+  userId          String
+  asset           String
 
-  user        User        @relation(fields: [userId], references: [id])
+  amount          Float       @default(0)
+
+  user            User        @relation(fields: [userId], references: [id])
 
   @@unique([userId, asset])
 }
 
 model Order {
-  id              String          @id @default(uuid())
+  id              String        @id @default(uuid())
 
   userId          String
-  marketId        String
+  market          String
 
   side            Side
-  type            OrderType
-  status          OrderStatus     @default(OPEN)
 
-  price           Float?
+  price           Float
   quantity        Float
 
-  filledQuantity  Float           @default(0)
+  filledQuantity  Float         @default(0)
 
-  user            User            @relation(fields: [userId], references: [id])
+  status          OrderStatus   @default(OPEN)
 
-  market          Market          @relation(fields: [marketId], references: [id])
+  user            User          @relation(fields: [userId], references: [id])
 
-  buyFills        Fill[]          @relation("BuyOrder")
-  sellFills       Fill[]          @relation("SellOrder")
+  buyFills        Fill[]        @relation("BuyOrder")
+  sellFills       Fill[]        @relation("SellOrder")
 
-  createdAt       DateTime        @default(now())
+  createdAt       DateTime      @default(now())
 }
 
 model Fill {
   id              String      @id @default(uuid())
 
-  marketId        String
-
-  buyerOrderId    String
-  sellerOrderId   String
-
-  buyerId         String
-  sellerId        String
+  market          String
 
   price           Float
   quantity        Float
 
-  market          Market      @relation(fields: [marketId], references: [id])
+  buyerId         String
+  sellerId        String
+
+  buyerOrderId    String
+  sellerOrderId   String
 
   buyer           User        @relation("BuyerFills", fields: [buyerId], references: [id])
 
