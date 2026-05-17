@@ -134,9 +134,3 @@ POST /balance/deposit
 - TradingView indicators
 - Redis orderbook caching
 - Kubernetes deployment
-
----
-
-## Author
-
-Built by Vidya Chakraborty.
