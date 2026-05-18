@@ -1,4 +1,3 @@
-# System-design-project
 # CX Exchange
 
 A full-stack real-time cryptocurrency exchange built from scratch with a matching engine, WebSockets, live orderbook updates, candlestick charts, authentication, and persistent trade storage.
