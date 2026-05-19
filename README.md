@@ -74,7 +74,7 @@ PostgreSQL
 cx-v1/
 ├── frontend/
 ├── backend/
-├── prisma/
+       ├── prisma_schema/
 └── README.md
 ```
 ## Running Locally
